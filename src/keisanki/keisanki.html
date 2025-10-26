@@ -237,7 +237,15 @@
                 currentInput += value;
             }
 
-            displayExpression = currentInput;
+            // 演算子が設定されている場合は、演算子も含めて表示
+            if (operator !== null) {
+                let operatorSymbol = operator;
+                if (operator === '*') operatorSymbol = '×';
+                if (operator === '/') operatorSymbol = '÷';
+                displayExpression = previousInput + operatorSymbol + currentInput;
+            } else {
+                displayExpression = currentInput;
+            }
             updateDisplay();
         }
 
@@ -289,6 +297,7 @@
                 case '/':
                     if (current === 0) {
                         currentInput = 'Error';
+                        displayExpression = 'Error';
                         updateDisplay();
                         return;
                     }
@@ -305,7 +314,12 @@
                 currentInput = parseFloat(result.toFixed(10)).toString();
             }
             
-            displayExpression = currentInput;
+            // 計算式全体を表示（例：5+3=8）
+            let operatorSymbol = operator;
+            if (operator === '*') operatorSymbol = '×';
+            if (operator === '/') operatorSymbol = '÷';
+            displayExpression = previousInput + operatorSymbol + currentInput + '=' + currentInput;
+            
             operator = null;
             previousInput = null;
             shouldResetDisplay = true;
